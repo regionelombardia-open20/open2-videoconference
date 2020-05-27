@@ -1,6 +1,15 @@
 <?php
 
-use lispa\amos\core\migration\AmosMigrationPermissions;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
+
+use open20\amos\core\migration\AmosMigrationPermissions;
 use yii\rbac\Permission;
 
 /**
@@ -28,14 +37,14 @@ class m171204_125957_videoconference_permissions extends AmosMigrationPermission
                 'name' => 'JoinOwnVideoconference',
                 'type' => Permission::TYPE_PERMISSION,
                 'description' => 'Permesso di CREATE sul model Videoconf',
-                'ruleName' => \lispa\amos\videoconference\rules\JoinOwnVideoconference::className(),
+                'ruleName' => \open20\amos\videoconference\rules\JoinOwnVideoconference::className(),
                 'parent' => ['ADMIN', 'BASIC_USER', 'AMMINISTRATORE_VIDEOCONF']
             ],
             [
                 'name' => 'UpdateOwnVideoconference',
                 'type' => Permission::TYPE_PERMISSION,
                 'description' => 'Permesso di CREATE sul model Videoconf',
-                'ruleName' => \lispa\amos\videoconference\rules\UpdateOwnVideoconference::className(),
+                'ruleName' => \open20\amos\videoconference\rules\UpdateOwnVideoconference::className(),
                 'parent' => ['ADMIN', 'BASIC_USER', 'AMMINISTRATORE_VIDEOCONF']
             ],
             [

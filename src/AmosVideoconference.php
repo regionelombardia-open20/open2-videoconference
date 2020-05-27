@@ -1,24 +1,24 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\videoconference
+ * @package    open20\amos\videoconference
  * @category   CategoryName
  */
 
-namespace lispa\amos\videoconference;
+namespace open20\amos\videoconference;
 
-use lispa\amos\core\module\AmosModule;
-use lispa\amos\core\module\ModuleInterface;
+use open20\amos\core\module\AmosModule;
+use open20\amos\core\module\ModuleInterface;
 
 use Yii;
 
 /**
  * Class AmosVideoconference
- * @package lispa\amos\videoconference
+ * @package open20\amos\videoconference
  */
 class AmosVideoconference extends AmosModule implements ModuleInterface
 {
@@ -33,7 +33,7 @@ class AmosVideoconference extends AmosModule implements ModuleInterface
     
     public $name = 'Videoconference';
     
-    public $controllerNamespace = 'lispa\amos\videoconference\controllers';
+    public $controllerNamespace = 'open20\amos\videoconference\controllers';
     
     public $config = [];
 
@@ -45,6 +45,9 @@ class AmosVideoconference extends AmosModule implements ModuleInterface
      * @var bool
      */
     public $onlyNetworkUsers = true;
+
+    //Url without http:// of the jitsi installation
+    public $jitsiDomain = 'PUT_JITSI_DOMAIN_HERE';
 
 
     /**
@@ -62,7 +65,7 @@ class AmosVideoconference extends AmosModule implements ModuleInterface
     {
         parent::init();
         
-        \Yii::setAlias('@lispa/amos/' . static::getModuleName() . '/controllers/', __DIR__ . '/controllers/');
+        \Yii::setAlias('@open20/amos/' . static::getModuleName() . '/controllers/', __DIR__ . '/controllers/');
         // initialize the module with the configuration loaded from config.php
          $config = require(__DIR__ . DIRECTORY_SEPARATOR . self::$CONFIG_FOLDER . DIRECTORY_SEPARATOR . 'config.php');
          Yii::configure($this,$config );

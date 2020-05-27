@@ -1,12 +1,21 @@
 <?php
-namespace lispa\amos\videoconference\utils;
 
-use lispa\amos\core\helpers\Html;
-use lispa\amos\videoconference\AmosVideoconference;
-use lispa\amos\videoconference\models\Videoconf;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
+namespace open20\amos\videoconference\utils;
+
+use open20\amos\core\helpers\Html;
+use open20\amos\videoconference\AmosVideoconference;
+use open20\amos\videoconference\models\Videoconf;
 use yii\helpers\Console;
 use yii\helpers\Url;
-use lispa\amos\core\utilities\Email;
+use open20\amos\core\utilities\Email;
 
 
 class EmailUtil
@@ -51,8 +60,8 @@ class EmailUtil
 //            'videoconference' => $videoconference->toArray(),
 //            'url_videoconf' => $url_videoconf
         ];
-        $template = '@vendor/lispa/amos-videoconference/src/mail/generic/generic-html';
-        $templateSubject = '@vendor/lispa/amos-videoconference/src/mail/generic/subject-html';
+        $template = '@vendor/open20/amos-videoconference/src/mail/generic/generic-html';
+        $templateSubject = '@vendor/open20/amos-videoconference/src/mail/generic/subject-html';
 
         $sent = self::sendEmail($to, $from, $subject, $params, $template, $templateSubject, $user);
         return $sent;
@@ -86,8 +95,8 @@ class EmailUtil
             'subject' => $subject,
             'profile' => $user->userProfile
         ];
-        $template = '@vendor/lispa/amos-videoconference/src/mail/generic/generic-html';
-        $templateSubject = '@vendor/lispa/amos-videoconference/src/mail/generic/subject-html';
+        $template = '@vendor/open20/amos-videoconference/src/mail/generic/generic-html';
+        $templateSubject = '@vendor/open20/amos-videoconference/src/mail/generic/subject-html';
 
         $sent = self::sendEmail($to, $from, $subject, $params, $template, $templateSubject, $user);
         return $sent;

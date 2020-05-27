@@ -1,14 +1,23 @@
 <?php
 
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
+
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use kartik\datecontrol\DateControl;
 use yii\helpers\Url;
-use lispa\amos\videoconference\assets\VideoconferenceAsset;
+use open20\amos\videoconference\assets\VideoconferenceAsset;
 
 /**
 * @var yii\web\View $this
-* @var lispa\amos\videoconference\models\Videoconf $model
+* @var open20\amos\videoconference\models\Videoconf $model
 */
 
 

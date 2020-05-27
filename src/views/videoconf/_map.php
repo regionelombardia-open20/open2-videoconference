@@ -1,5 +1,14 @@
-<?php 
-use lispa\amos\core\helpers\Html;
+<?php
+
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */ 
+use open20\amos\core\helpers\Html;
     
 /*
  * Personalizzare a piacimento la vista

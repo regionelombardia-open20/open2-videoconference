@@ -1,12 +1,12 @@
 <?php
 
-namespace lispa\amos\videoconference\i18n\grammar;
+namespace open20\amos\videoconference\i18n\grammar;
 
-use lispa\amos\core\interfaces\ModelGrammarInterface;
-use lispa\amos\videoconference\AmosVideoconference;
+use open20\amos\core\interfaces\ModelGrammarInterface;
+use open20\amos\videoconference\AmosVideoconference;
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *

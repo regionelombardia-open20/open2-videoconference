@@ -1,6 +1,15 @@
 <?php
 
-namespace lispa\amos\videoconference\models;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
+
+namespace open20\amos\videoconference\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -8,7 +17,7 @@ use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "videoconf_users_mm".
  */
-class VideoconfUsersMm extends \lispa\amos\videoconference\models\base\VideoconfUsersMm {
+class VideoconfUsersMm extends \open20\amos\videoconference\models\base\VideoconfUsersMm {
 
     public function representingColumn() {
         return [
@@ -25,6 +34,7 @@ class VideoconfUsersMm extends \lispa\amos\videoconference\models\base\Videoconf
      * Returns the text hint for the specified attribute.
      * @param string $attribute the attribute name
      * @return string the attribute hint
+     * @see attributeHints
      */
     public function getAttributeHint($attribute) {
         $hints = $this->attributeHints();

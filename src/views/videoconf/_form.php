@@ -1,19 +1,28 @@
 <?php
 
-use lispa\amos\core\helpers\Html;
-use lispa\amos\core\forms\ActiveForm;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
+
+use open20\amos\core\helpers\Html;
+use open20\amos\core\forms\ActiveForm;
 use kartik\builder\Form;
 use kartik\datecontrol\DateControl;
-use lispa\amos\core\forms\Tabs;
-use lispa\amos\core\forms\CloseSaveButtonWidget;
+use open20\amos\core\forms\Tabs;
+use open20\amos\core\forms\CloseSaveButtonWidget;
 use yii\helpers\Url;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
-use lispa\amos\videoconference\models\Videoconf;
+use open20\amos\videoconference\models\Videoconf;
 
 /**
  * @var yii\web\View $this
- * @var lispa\amos\videoconference\models\Videoconf $model
+ * @var open20\amos\videoconference\models\Videoconf $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>
@@ -56,6 +65,7 @@ $this->registerJs($js);
     <?php $this->beginBlock('dettaglio'); ?>
     <div class="row">
         <div class="col-lg-12 col-sm-12">
+            <?php if(empty($model->title)) $model->title = \open20\amos\videoconference\AmosVideoconference::t('amosvideoconference', 'Videocall #') . date('YmdHis'); ?>
             <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
@@ -69,7 +79,7 @@ $this->registerJs($js);
             $display = '';
         }?>
         <div class="col-lg-4 col-sm-12">
-            <?= $form->field($model, 'sheduledVideoconfCheckBox')->checkbox(['class' => 'schedule-videoconference'])->label(\lispa\amos\videoconference\AmosVideoconference::t('amosvideoconference', 'Programma videoconferenza'));?>
+            <?= $form->field($model, 'sheduledVideoconfCheckBox')->checkbox(['class' => 'schedule-videoconference'])->label(\open20\amos\videoconference\AmosVideoconference::t('amosvideoconference', 'Programma videoconferenza'));?>
         </div>
     </div>
     <div id = "date-hour-container" class="row" style="<?= $display ?>">
@@ -118,6 +128,7 @@ $this->registerJs($js);
         <div class="col-lg-12 col-sm-12">
             <?php
             /**
+             * @see https://github.com/softark/yii2-dual-listbox or https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox
              */
             echo \softark\duallistbox\DualListbox::widget([
                 'model' => $model_partecipanti,
@@ -151,10 +162,12 @@ $this->registerJs($js);
     $itemsTab[] = [
         'label' => Yii::t('cruds', 'dettaglio'),
         'content' => $this->blocks['dettaglio'],
+        'options' => ['id' => 'dettagli'],
     ];
     $itemsTab[] = [
         'label' => Yii::t('cruds', 'partecipanti'),
         'content' => $this->blocks['partecipanti'],
+        'options' => ['id' => 'partecipanti'],
     ];
     ?>
 

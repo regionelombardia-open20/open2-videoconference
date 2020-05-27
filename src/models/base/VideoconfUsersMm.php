@@ -1,8 +1,17 @@
 <?php
 
-namespace lispa\amos\videoconference\models\base;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
 
-use lispa\amos\admin\models\UserProfile;
+namespace open20\amos\videoconference\models\base;
+
+use open20\amos\admin\models\UserProfile;
 use Yii;
 
 /** 
@@ -18,10 +27,10 @@ use Yii;
     * @property integer $updated_by
     * @property integer $deleted_by
     * 
-    * @property \lispa\amos\admin\models\UserProfile $user
-    * @property \lispa\amos\videoconference\models\Videoconf $videoconf
+    * @property \open20\amos\admin\models\UserProfile $user
+    * @property \open20\amos\videoconference\models\Videoconf $videoconf
     */ 
-class VideoconfUsersMm extends \lispa\amos\core\record\Record
+class VideoconfUsersMm extends \open20\amos\core\record\Record
 { 
 
 
@@ -70,7 +79,7 @@ return [
     */ 
     public function getUserProfile()
     { 
-    return $this->hasOne(\lispa\amos\admin\models\UserProfile::className(), ['id' => 'user_profile_id']);
+    return $this->hasOne(\open20\amos\admin\models\UserProfile::className(), ['id' => 'user_profile_id']);
     } 
 
     /** 
@@ -78,6 +87,6 @@ return [
     */ 
     public function getVideoconf() 
     { 
-    return $this->hasOne(\lispa\amos\videoconference\models\Videoconf::className(), ['id' => 'videoconf_id']);
+    return $this->hasOne(\open20\amos\videoconference\models\Videoconf::className(), ['id' => 'videoconf_id']);
     } 
 } 

@@ -1,21 +1,30 @@
 <?php
 
-namespace lispa\amos\videoconference\models;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
 
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\notificationmanager\models\Notification;
+namespace open20\amos\videoconference\models;
+
+use open20\amos\admin\models\UserProfile;
+use open20\amos\notificationmanager\models\Notification;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use lispa\amos\core\interfaces\ContentModelInterface;
-use lispa\amos\core\interfaces\ViewModelInterface;
-use lispa\amos\videoconference\widgets\icons\WidgetIconVideoconference;
-use lispa\amos\videoconference\i18n\grammar\VideoconferenceGrammar;
+use open20\amos\core\interfaces\ContentModelInterface;
+use open20\amos\core\interfaces\ViewModelInterface;
+use open20\amos\videoconference\widgets\icons\WidgetIconVideoconference;
+use open20\amos\videoconference\i18n\grammar\VideoconferenceGrammar;
 
 /**
  * This is the model class for table "videoconf".
  */
-class Videoconf extends \lispa\amos\videoconference\models\base\Videoconf implements ContentModelInterface ,ViewModelInterface{
+class Videoconf extends \open20\amos\videoconference\models\base\Videoconf implements ContentModelInterface ,ViewModelInterface{
 
     const STATUS_FUTURE = 1;
     const STATUS_RUNNING = 2;
@@ -40,6 +49,7 @@ class Videoconf extends \lispa\amos\videoconference\models\base\Videoconf implem
      * Returns the text hint for the specified attribute.
      * @param string $attribute the attribute name
      * @return string the attribute hint
+     * @see attributeHints
      */
     public function getAttributeHint($attribute) {
         $hints = $this->attributeHints();

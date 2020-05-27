@@ -1,11 +1,22 @@
 <?php
 
-use lispa\amos\core\helpers\Html;
-use lispa\amos\core\views\DataProviderView;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
+
+use open20\amos\core\helpers\Html;
+use open20\amos\core\views\DataProviderView;
+use open20\amos\core\utilities\ViewUtility;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\core\utilities\ModalUtility;
+use open20\amos\videoconference\AmosVideoconference;
+
 use yii\widgets\Pjax;
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\core\utilities\ModalUtility;
-use lispa\amos\videoconference\AmosVideoconference;
 
 /**
  * @var yii\web\View $this
@@ -59,12 +70,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'html',
                     'value' => function ($model) {
                         if ($model->begin_date_hour) {
-                            $displayFormat = (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A';
-                            $data = Yii::$app->formatter->asDatetime($model->begin_date_hour,$displayFormat);
-                            return $data;
-                        } else {
-                            return '';
+                            return Yii::$app->formatter->asDatetime($model->begin_date_hour, ViewUtility::formatDateTime());
                         }
+                        
+                        return '';
                     }
                 ],
                 [
@@ -72,12 +81,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'html',
                     'value' => function ($model) {
                         if ($model->end_date_hour) {
-                            $displayFormat = (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A';
-                            $data = Yii::$app->formatter->asDatetime($model->end_date_hour,$displayFormat);
-                            return $data;
-                        } else {
-                            return '';
+                            return Yii::$app->formatter->asDatetime($model->end_date_hour, ViewUtility::formatDateTime());
                         }
+                        
+                        return '';
                     }
                 ],
                //  ['attribute'=>'created_at','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
@@ -87,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'updated_by', 
 //            'deleted_by', 
                 [
-                    'class' => 'lispa\amos\core\views\grid\ActionColumn',
+                    'class' => 'open20\amos\core\views\grid\ActionColumn',
                     'template' => $actionColumn,
                     'buttons' => [
                         'join' => function ($url, $model) {

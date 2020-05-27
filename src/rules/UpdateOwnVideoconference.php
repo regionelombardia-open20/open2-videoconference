@@ -1,24 +1,24 @@
 <?php
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\videoconference
+ * @package    open20\amos\videoconference
  * @category   CategoryName
  */
 
-namespace lispa\amos\videoconference\rules;
+namespace open20\amos\videoconference\rules;
 
-use lispa\amos\videoconference\AmosVideoconference;
-use lispa\amos\admin\models\UserProfile;
+use open20\amos\videoconference\AmosVideoconference;
+use open20\amos\admin\models\UserProfile;
 use yii\rbac\Item;
 use yii\rbac\Rule;
-use lispa\amos\videoconference\models\Videoconf;
+use open20\amos\videoconference\models\Videoconf;
 
 /**
  * Class UpdateOwnVideoconference
- * @package lispa\amos\admin\rbac
+ * @package open20\amos\admin\rbac
  */
 class UpdateOwnVideoconference extends Rule
 {

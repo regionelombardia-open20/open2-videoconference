@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\admin
+ * @package    open20\amos\admin
  * @category   CategoryName
  */
 
 use yii\helpers\Html;
-use lispa\amos\videoconference\AmosVideoconference;
+use open20\amos\videoconference\AmosVideoconference;
 
 /* @var $this yii\web\View */
 /* @var $user common\models\User */

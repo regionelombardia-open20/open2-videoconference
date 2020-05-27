@@ -1,15 +1,24 @@
 <?php
 
-namespace lispa\amos\videoconference\models\base;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
 
-use lispa\amos\admin\models\UserContact;
-use lispa\amos\admin\models\UserProfile;
+namespace open20\amos\videoconference\models\base;
+
+use open20\amos\admin\models\UserContact;
+use open20\amos\admin\models\UserProfile;
 use yii\helpers\ArrayHelper;
-use lispa\amos\admin\AmosAdmin;
+use open20\amos\admin\AmosAdmin;
 
 /**
  * Class UserProfileForm
- * @package lispa\amos\videoconference\models\base
+ * @package open20\amos\videoconference\models\base
  * Classe "cuscinetto" per permettere il caricamento dei partecipanti delle videoconferenze
  */
 class UserProfileForm extends \yii\base\Model
@@ -58,6 +67,7 @@ class UserProfileForm extends \yii\base\Model
      * Returns the text hint for the specified attribute.
      * @param string $attribute the attribute name
      * @return string the attribute hint
+     * @see attributeHints
      */
     public function getAttributeHint($attribute)
     {
@@ -129,11 +139,11 @@ class UserProfileForm extends \yii\base\Model
                     }
 
                     //controllo se esiste già almeno una notifica per videoconferenza_id e user_id
-                    $has_notification = \lispa\amos\videoconference\models\Videoconf::checkHasNotificationByVideoconfAndUser($this->videoconf_id,
+                    $has_notification = \open20\amos\videoconference\models\Videoconf::checkHasNotificationByVideoconfAndUser($this->videoconf_id,
                             $user_profile_id);
                     //se non esiste: lo creo in modo che venga poi inviata
                     if ($has_notification === false) {
-                        \lispa\amos\videoconference\models\Videoconf::createNotificationByVideoconfAnduser($this->videoconf_id,
+                        \open20\amos\videoconference\models\Videoconf::createNotificationByVideoconfAnduser($this->videoconf_id,
                             $user_profile_id);
                     }
                 }

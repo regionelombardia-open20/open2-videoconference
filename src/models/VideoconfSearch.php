@@ -1,15 +1,24 @@
 <?php
 
-namespace lispa\amos\videoconference\models;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
 
-use lispa\amos\admin\models\UserProfile;
+namespace open20\amos\videoconference\models;
+
+use open20\amos\admin\models\UserProfile;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use lispa\amos\videoconference\models\Videoconf;
+use open20\amos\videoconference\models\Videoconf;
 
 /**
- * VideoconfSearch represents the model behind the search form about `lispa\amos\videoconference\models\Videoconf`.
+ * VideoconfSearch represents the model behind the search form about `open20\amos\videoconference\models\Videoconf`.
  */
 class VideoconfSearch extends Videoconf {
 
@@ -100,7 +109,7 @@ class VideoconfSearch extends Videoconf {
           $notify = Yii::$app->getModule('notify');
           if($notify)
           {
-          $notify->notificationOff(Yii::$app->getUser()->id, Community::className(),$query, \lispa\amos\notificationmanager\models\NotificationChannels::CHANNEL_READ);
+          $notify->notificationOff(Yii::$app->getUser()->id, Community::className(),$query, \open20\amos\notificationmanager\models\NotificationChannels::CHANNEL_READ);
           } */
         $dp_params = ['query' => $query,];
         if ($limit) {
@@ -165,7 +174,7 @@ class VideoconfSearch extends Videoconf {
         $isSetCwh = $this->isSetCwh($moduleCwh, $classname);
         if ($isSetCwh) {
             $moduleCwh->setCwhScopeFromSession();
-            $cwhActiveQuery = new \lispa\amos\cwh\query\CwhActiveQuery(
+            $cwhActiveQuery = new \open20\amos\cwh\query\CwhActiveQuery(
                     $classname, [
                 'queryBase' => $query
             ]);

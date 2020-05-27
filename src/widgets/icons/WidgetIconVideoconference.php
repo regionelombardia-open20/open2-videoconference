@@ -1,33 +1,62 @@
 <?php
 
-namespace lispa\amos\videoconference\widgets\icons;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
 
-use lispa\amos\core\widget\WidgetIcon;
-use lispa\amos\videoconference\AmosVideoconference;
+namespace open20\amos\videoconference\widgets\icons;
+
+use open20\amos\core\widget\WidgetIcon;
+use open20\amos\core\widget\WidgetAbstract;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\videoconference\AmosVideoconference;
 use Yii;
 use yii\helpers\ArrayHelper;
-use lispa\amos\comuni\AmosComuni;
+
+// use open20\amos\comuni\AmosComuni;
 
 class WidgetIconVideoconference extends WidgetIcon
 {
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
 
-        $this->setLabel(AmosVideoconference::t('amosvideoconference', 'Videoconference'));
+        $paramsClassSpan = [
+            'bk-backgroundIcon',
+            'color-lightPrimary'
+        ];
+
+        $this->setLabel(AmosVideoconference::tHtml('amosvideoconference', 'Videoconference'));
         $this->setDescription(AmosVideoconference::t('amosvideoconference', 'Plugin per videoconferenze'));
 
-        $this->setIcon('video-camera');
-        $this->setIconFramework('dash');
+        if (!empty(\Yii::$app->params['dashboardEngine']) && \Yii::$app->params['dashboardEngine'] == WidgetAbstract::ENGINE_ROWS) {
+            $this->setIconFramework(AmosIcons::IC);
+            $this->setIcon('videoconferenza');
+            $paramsClassSpan = [];
+        } else {
+            $this->setIconFramework('dash');
+            $this->setIcon('video-camera');
+        }
+
         $this->setUrl(Yii::$app->urlManager->createUrl(['/videoconference/videoconf/index']));
         $this->setModuleName('videoconference');
         $this->setNamespace(__CLASS__);
 
-        $this->setClassSpan(ArrayHelper::merge($this->getClassSpan(), [
-            'bk-backgroundIcon',
-            'color-lightPrimary'
-        ]));
+        $this->setClassSpan(
+            ArrayHelper::merge(
+                $this->getClassSpan(),
+                $paramsClassSpan
+            )
+        );
     }
 
 }

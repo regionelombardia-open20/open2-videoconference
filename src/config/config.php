@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\videoconference
+ * @package    open20\amos\videoconference
  * @category   CategoryName
  */
 
-$jitsiDomain = "meet.test.demotestwip.it";
+$jitsiDomain = "PUT_JITSI_DOMAIN_HERE";
 
 return [
     'config' => [

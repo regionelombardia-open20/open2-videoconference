@@ -1,28 +1,37 @@
 <?php
 
-namespace lispa\amos\videoconference\controllers;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
 
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\core\user\User;
-use lispa\amos\core\utilities\Email;
-use lispa\amos\notificationmanager\models\NotificationsRead;
-use lispa\amos\videoconference\models\base\UserProfileForm;
-use lispa\amos\videoconference\models\VideoconfUsersMm;
-use lispa\amos\videoconference\utils\EmailUtil;
+namespace open20\amos\videoconference\controllers;
+
+use open20\amos\admin\models\UserProfile;
+use open20\amos\core\user\User;
+use open20\amos\core\utilities\Email;
+use open20\amos\notificationmanager\models\NotificationsRead;
+use open20\amos\videoconference\models\base\UserProfileForm;
+use open20\amos\videoconference\models\VideoconfUsersMm;
+use open20\amos\videoconference\utils\EmailUtil;
 use Yii;
-use lispa\amos\videoconference\models\Videoconf;
-use lispa\amos\videoconference\models\VideoconfSearch;
-use lispa\amos\core\controllers\CrudController;
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\core\helpers\Html;
-use lispa\amos\core\helpers\T;
+use open20\amos\videoconference\models\Videoconf;
+use open20\amos\videoconference\models\VideoconfSearch;
+use open20\amos\core\controllers\CrudController;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\core\helpers\Html;
+use open20\amos\core\helpers\T;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\data\ActiveDataProvider;
-use lispa\amos\videoconference\AmosVideoconference;
+use open20\amos\videoconference\AmosVideoconference;
 
 /**
  * This is the class for controller "VideoconfController".
@@ -133,15 +142,15 @@ class VideoconfController extends CrudController
 
     public function actionTest()
     {
-        //$videoconference = new \lispa\amos\videoconference\models\Videoconf();
-        $videoconference = \lispa\amos\videoconference\models\Videoconf::findOne(1);
+        //$videoconference = new \open20\amos\videoconference\models\Videoconf();
+        $videoconference = \open20\amos\videoconference\models\Videoconf::findOne(1);
         // pr($videoconference->toArray(), 'videoconference');//exit;
         $users           = $videoconference->getVideoconfUsersMms()->all();
         // $users = $videoconference->getVideoconfUsers();
 
         foreach ($users as $u) {
             pr($u->toArray(), '$u relazione'); //exit;
-            $userProfile = \lispa\amos\admin\models\UserProfile::findOne($u->user_id);
+            $userProfile = \open20\amos\admin\models\UserProfile::findOne($u->user_id);
             // pr($userProfile->toArray(), '$userProfile');//exit;
             $user        = $userProfile->getUser()->one();
             // pr($user->toArray(), '$user');//exit;
@@ -233,7 +242,7 @@ class VideoconfController extends CrudController
      */
     public function actionCreate()
     {
-        $this->layout = "@vendor/lispa/amos-core/views/layouts/form";
+        $this->layout = "@vendor/open20/amos-core/views/layouts/form";
         $model        = new Videoconf;
 
         //carico i partecipanti ottenendo le variabili $this->model_partecipanti e $this->partecipanti popolate
@@ -307,7 +316,7 @@ class VideoconfController extends CrudController
      */
     public function actionUpdate($id)
     {
-        $this->layout = "@vendor/lispa/amos-core/views/layouts/form";
+        $this->layout = "@vendor/open20/amos-core/views/layouts/form";
         $model        = $this->findModel($id);
 
         //carico i partecipanti ottenendo le variabili $this->model_partecipanti e $this->partecipanti popolate

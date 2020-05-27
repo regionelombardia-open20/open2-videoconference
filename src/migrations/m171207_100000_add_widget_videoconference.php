@@ -1,6 +1,15 @@
 <?php
-use lispa\amos\core\migration\AmosMigrationWidgets;
-use lispa\amos\dashboard\models\AmosWidgets;
+
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
+use open20\amos\core\migration\AmosMigrationWidgets;
+use open20\amos\dashboard\models\AmosWidgets;
 
 
 /**
@@ -16,11 +25,11 @@ class m171207_100000_add_widget_videoconference extends AmosMigrationWidgets
     {
         $this->widgets = [
             [
-                'classname' => \lispa\amos\videoconference\widgets\icons\WidgetIconVideoconference::className(),
+                'classname' => \open20\amos\videoconference\widgets\icons\WidgetIconVideoconference::className(),
                 'type' => AmosWidgets::TYPE_ICON,
                 'module' => self::MODULE_NAME,
                 'dashboard_visible' => 1,
-                //'child_of' => \lispa\amos\videoconference\widgets\icons\WidgetIconVideoconference::className(),
+                //'child_of' => \open20\amos\videoconference\widgets\icons\WidgetIconVideoconference::className(),
             ]
         ];
     }

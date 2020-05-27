@@ -1,29 +1,29 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\moodle\assets
+ * @package    open20\amos\moodle\assets
  * @category   CategoryName
  */
 
-namespace lispa\amos\videoconference\assets;
+namespace open20\amos\videoconference\assets;
 
 use yii\web\AssetBundle;
 use Yii;
 
 /**
  * Class VideoconferenceAsset
- * @package lispa\amos\videoconference\assets
+ * @package open20\amos\videoconference\assets
  */
 class VideoconferenceAsset extends AssetBundle {
 
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@vendor/lispa/amos-videoconference/src/assets/web';
+    public $sourcePath = '@vendor/open20/amos-videoconference/src/assets/web';
     public $publishOptions = [
         'forceCopy' => YII_DEBUG,
     ];
@@ -53,8 +53,8 @@ class VideoconferenceAsset extends AssetBundle {
         $jitsiDomain = Yii::$app->getModule('videoconference')->jitsiDomain ?: null;
         
         $this->js = [
+            'js/videoconference.js',
             "https://".$jitsiDomain."/libs/external_api.min.js",
-            'js/videoconference.js'
         ];
         parent::init();
     }

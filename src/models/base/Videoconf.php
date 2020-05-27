@@ -1,10 +1,19 @@
 <?php
 
-namespace lispa\amos\videoconference\models\base;
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
 
-use lispa\amos\notificationmanager\models\Notification;
+namespace open20\amos\videoconference\models\base;
+
+use open20\amos\notificationmanager\models\Notification;
 use Yii;
-use lispa\amos\videoconference\AmosVideoconference;
+use open20\amos\videoconference\AmosVideoconference;
 
 /**
  * This is the base-model class for table "videoconf".
@@ -26,9 +35,9 @@ use lispa\amos\videoconference\AmosVideoconference;
  * @property integer $updated_by
  * @property integer $deleted_by
  *
- * @property \lispa\amos\videoconference\models\VideoconfUsersMm[] $videoconfUsersMms
+ * @property \open20\amos\videoconference\models\VideoconfUsersMm[] $videoconfUsersMms
  */
-class Videoconf extends \lispa\amos\core\record\Record
+class Videoconf extends \open20\amos\core\record\Record
 {
 
 
@@ -118,7 +127,7 @@ class Videoconf extends \lispa\amos\core\record\Record
      */
     public function getVideoconfUsersMms()
     {
-        return $this->hasMany(\lispa\amos\videoconference\models\VideoconfUsersMm::className(), ['videoconf_id' => 'id']);
+        return $this->hasMany(\open20\amos\videoconference\models\VideoconfUsersMm::className(), ['videoconf_id' => 'id']);
     }
 
 

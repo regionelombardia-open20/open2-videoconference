@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\videoconference
+ * @package    open20\amos\videoconference
  * @category   CategoryName
  */
 
-/** @var \lispa\amos\dashboard\models\AmosUserDashboards $currentDashboard * */
+/** @var \open20\amos\dashboard\models\AmosUserDashboards $currentDashboard * */
 
 /** @var \yii\web\View $this * */
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\core\views\assets\AmosCoreAsset;
-use lispa\amos\dashboard\assets\ModuleDashboardAsset;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\core\views\assets\AmosCoreAsset;
+use open20\amos\dashboard\assets\ModuleDashboardAsset;
 use yii\helpers\Html;
-use lispa\amos\videoconference\AmosVideoconference;
+use open20\amos\videoconference\AmosVideoconference;
 
 AmosCoreAsset::register($this);
 ModuleDashboardAsset::register($this);

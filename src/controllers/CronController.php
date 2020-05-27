@@ -1,13 +1,22 @@
 <?php
-namespace lispa\amos\videoconference\controllers;
+
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
+namespace open20\amos\videoconference\controllers;
 //namespace console\controllers;
 
 
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\videoconference\AmosVideoconference;
-use lispa\amos\videoconference\models\Videoconf;
-use lispa\amos\videoconference\models\VideoconfUsersMm;
-use lispa\amos\videoconference\utils\EmailUtil;
+use open20\amos\admin\models\UserProfile;
+use open20\amos\videoconference\AmosVideoconference;
+use open20\amos\videoconference\models\Videoconf;
+use open20\amos\videoconference\models\VideoconfUsersMm;
+use open20\amos\videoconference\utils\EmailUtil;
 use yii\console\Controller;
 use yii\helpers\Console;
 use Yii;

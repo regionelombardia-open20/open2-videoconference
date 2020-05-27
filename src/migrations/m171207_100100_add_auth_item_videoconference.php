@@ -1,5 +1,14 @@
 <?php
-use lispa\amos\core\migration\AmosMigrationPermissions;
+
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
+use open20\amos\core\migration\AmosMigrationPermissions;
 use yii\rbac\Permission;
 
 
@@ -17,7 +26,7 @@ class m171207_100100_add_auth_item_videoconference extends AmosMigrationPermissi
 
         return [
             [
-                'name' =>  \lispa\amos\videoconference\widgets\icons\WidgetIconVideoconference::className(),
+                'name' =>  \open20\amos\videoconference\widgets\icons\WidgetIconVideoconference::className(),
                 'type' => Permission::TYPE_PERMISSION,
                 'description' => $prefixStr . 'WidgetIconVideoconference',
                 'ruleName' => null,
