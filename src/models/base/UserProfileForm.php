@@ -1,14 +1,5 @@
 <?php
 
-/**
- * Aria S.p.A.
- * OPEN 2.0
- *
- *
- * @package    Open20Package
- * @category   CategoryName
- */
-
 namespace open20\amos\videoconference\models\base;
 
 use open20\amos\admin\models\UserContact;
@@ -34,8 +25,8 @@ class UserProfileForm extends \yii\base\Model
             ['ids', 'safe'],
             ['videoconf_id', 'required'],
             ['ids', 'each', 'rule' => [
-                    'exist', 'targetClass' => UserProfile::className(), 'targetAttribute' => 'id'
-                ]],
+                'exist', 'targetClass' => UserProfile::className(), 'targetAttribute' => 'id'
+            ]],
             // define validation rules here
         ];
     }
@@ -67,7 +58,6 @@ class UserProfileForm extends \yii\base\Model
      * Returns the text hint for the specified attribute.
      * @param string $attribute the attribute name
      * @return string the attribute hint
-     * @see attributeHints
      */
     public function getAttributeHint($attribute)
     {
@@ -81,9 +71,9 @@ class UserProfileForm extends \yii\base\Model
      */
     public function loadUsers()
     {
-        $this->ids  = [];
+        $this->ids = [];
         //cerco gli user_profile partecipanti ad una videoconferenza
-        $q          = UserProfile::find()
+        $q = UserProfile::find()
             ->innerJoin('videoconf_users_mm', 'videoconf_users_mm.user_profile_id = user_profile.id')
             ->andWhere(['videoconf_users_mm.deleted_by' => null])
             ->andWhere(['videoconf_users_mm.videoconf_id' => $this->videoconf_id]);
@@ -113,20 +103,21 @@ class UserProfileForm extends \yii\base\Model
             //scorro tutti gli id user profile che sono da associare
             foreach ($this->ids as $user_profile_id) {
                 //controllo esistenza record già presente per i valori da inserire
-                $q     = VideoconfUsersMm::find()->andWhere(['videoconf_id' => $this->videoconf_id, 'user_profile_id' => $user_profile_id,
-                    'deleted_by' => null]);
+                $q = VideoconfUsersMm::find()
+                    ->andWhere(['videoconf_id' => $this->videoconf_id, 'user_profile_id' => $user_profile_id,
+                        'deleted_by' => null]);
                 /* pr($q->createCommand()->rawSql); */
                 $exist = ($q->count() > 0) ? true : false;
 
                 //se non esiste: salvo associazione
                 if (!$exist) {
-                    $mm                  = new VideoconfUsersMm();
-                    $mm->videoconf_id    = $this->videoconf_id;
+                    $mm = new VideoconfUsersMm();
+                    $mm->videoconf_id = $this->videoconf_id;
                     $mm->user_profile_id = $user_profile_id;
                     //pr($mm->toArray(), "salverei");
                     if ($mm->save()) {
                         $userProfile = AmosAdmin::instance()->createModel('UserProfile');
-                        $profile     = $userProfile::findOne($mm->user_profile_id);
+                        $profile = $userProfile::findOne($mm->user_profile_id);
                         if (isset($profile->user_id)) {
                             $permissions = \Yii::$app->authManager->getPermissionsByUser($profile->user_id);
                             if (!isset($permissions['JoinOwnVideoconference'])) {
@@ -140,7 +131,7 @@ class UserProfileForm extends \yii\base\Model
 
                     //controllo se esiste già almeno una notifica per videoconferenza_id e user_id
                     $has_notification = \open20\amos\videoconference\models\Videoconf::checkHasNotificationByVideoconfAndUser($this->videoconf_id,
-                            $user_profile_id);
+                        $user_profile_id);
                     //se non esiste: lo creo in modo che venga poi inviata
                     if ($has_notification === false) {
                         \open20\amos\videoconference\models\Videoconf::createNotificationByVideoconfAnduser($this->videoconf_id,
@@ -167,16 +158,16 @@ class UserProfileForm extends \yii\base\Model
             ['user_contact.contact_id' => $loggedUserId]
         ])->andWhere(['<>', 'user_contact.status', UserContact::STATUS_REFUSED])->all();
 
-        $listContact =[];
-        foreach ($contacts as $userContact){
-            $listContact []= $userContact->user_id;
-            $listContact []= $userContact->contact_id;
+        $listContact = [];
+        foreach ($contacts as $userContact) {
+            $listContact [] = $userContact->user_id;
+            $listContact [] = $userContact->contact_id;
         }
 
 
-         $query = $userProfile::find();
-        if(!empty($moduleVideoconf) && $moduleVideoconf->onlyNetworkUsers){
-            $query->andWhere(['in', 'user_profile.user_id' , $listContact]);
+        $query = $userProfile::find();
+        if (!empty($moduleVideoconf) && $moduleVideoconf->onlyNetworkUsers) {
+            $query->andWhere(['in', 'user_profile.user_id', $listContact]);
         }
 //            ->innerJoin('user_contact', 'user_profile.user_id = user_contact.contact_id')
         $cwh = \Yii::$app->getModule("cwh");
@@ -187,17 +178,17 @@ class UserProfileForm extends \yii\base\Model
             $cwh->setCwhScopeFromSession();
             if (!empty($cwh->userEntityRelationTable)) {
                 $mmTable = $cwh->userEntityRelationTable['mm_name'];
-                $mmTableAlis =  'u2';
+                $mmTableAlis = 'u2';
                 $entityField = $cwh->userEntityRelationTable['entity_id_field'];
                 $entityId = $cwh->userEntityRelationTable['entity_id'];
                 $query
-                    ->innerJoin($mmTable . ' ' .$mmTableAlis, $mmTableAlis . '.user_id = user_profile.user_id ')
+                    ->innerJoin($mmTable . ' ' . $mmTableAlis, $mmTableAlis . '.user_id = user_profile.user_id ')
                     ->andWhere([
                         $mmTableAlis . '.' . $entityField => $entityId
                     ])->andWhere($mmTableAlis . '.deleted_at is null');
 
                 $mmTableSchema = \Yii::$app->db->schema->getTableSchema($mmTable);
-                if(isset($mmTableSchema->columns['status'])) {
+                if (isset($mmTableSchema->columns['status'])) {
                     $query->andWhere([$mmTableAlis . '.status' => 'ACTIVE']);
                 }
             }
@@ -206,7 +197,7 @@ class UserProfileForm extends \yii\base\Model
         $users = $query->asArray()->all();
         $items = [];
         foreach ($users as $value) {
-            $items[$value['id']] = $value['nome'].' '.$value['cognome'].(!empty($value['codice_fiscale']) ? (' - '.$value['codice_fiscale'])
+            $items[$value['id']] = $value['nome'] . ' ' . $value['cognome'] . (!empty($value['codice_fiscale']) ? (' - ' . $value['codice_fiscale'])
                     : '');
         }
         return $items;

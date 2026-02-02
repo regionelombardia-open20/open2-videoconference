@@ -1,14 +1,5 @@
 <?php
 
-/**
- * Aria S.p.A.
- * OPEN 2.0
- *
- *
- * @package    Open20Package
- * @category   CategoryName
- */
-
 use open20\amos\core\helpers\Html;
 use open20\amos\core\views\DataProviderView;
 use open20\amos\core\utilities\ViewUtility;
@@ -23,7 +14,7 @@ use yii\widgets\Pjax;
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var app\models\VideoconfSearch $model
  */
-$actionColumn = '{join}{view}{update}{delete}';
+$actionColumn = '{join}{view}{update}{participants}{delete}';
 
 $this->title = AmosVideoconference::t('amosvideoconference', 'Videoconferenza');
 $this->params['breadcrumbs'][] = $this->title;
@@ -47,6 +38,24 @@ $this->params['breadcrumbs'][] = $this->title;
         'gridView' => [
             //'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
             'columns' => [
+                [
+                    'class' => 'kartik\grid\ExpandRowColumn',
+                    'expandAllTitle' => 'Sotto progetti',
+                    'allowBatchToggle' => false,
+                    'header' => '',
+                    'headerOptions' => [
+                        'style' => 'white-space: nowrap;'
+                    ],
+                    'collapseIcon' => AmosIcons::show('chevron-down'),
+                    'expandIcon' => AmosIcons::show('chevron-right'),
+                    'contentOptions' => [
+                        'class' => 'text-center'
+                    ],
+                    'value' => function ($model, $key, $index, $column) {
+                        return \kartik\grid\GridView::ROW_COLLAPSED;
+                    },
+                    'detailUrl' => \yii\helpers\Url::to(['/videoconference/videoconf-ajax/more-info'])
+                ],
                 //['class' => 'yii\grid\SerialColumn'],
                 'title',
                 'description:html',
@@ -105,6 +114,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'class' => 'bk-btnMore',
                                 ];
                                 return Html::a(AmosIcons::show('videocam', ['class' => 'btn btn-tool-secondary']), $action, $options);
+                            }
+                        },
+                        'participants' => function ($url, $model) {
+                            if ((\Yii::$app->user->can('VIDEOCONF_UPDATE',['model'=> $model]))) {
+                                return Html::a(AmosIcons::show('accounts-add'), ['/videoconference/videoconf/participants', 'id' => $model->id],   [
+                                    'class' => 'btn btn-tools-secondary',
+                                    'title' => AmosVideoconference::t('amosvideoconference',"Partecipanti"),
+                                    'data-pjax' => '0'
+                                ]);
                             }
                         },
                     ]

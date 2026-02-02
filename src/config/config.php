@@ -9,7 +9,7 @@
  * @category   CategoryName
  */
 
-$jitsiDomain = "PUT_JITSI_DOMAIN_HERE";
+$jitsiDomain = "meet.test.demotestwip.it";
 
 return [
     'config' => [

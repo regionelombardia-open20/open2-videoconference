@@ -1,14 +1,5 @@
 <?php
 
-/**
- * Aria S.p.A.
- * OPEN 2.0
- *
- *
- * @package    Open20Package
- * @category   CategoryName
- */
-
 use open20\amos\core\helpers\Html;
 use open20\amos\core\forms\ActiveForm;
 use kartik\builder\Form;
@@ -19,6 +10,7 @@ use yii\helpers\Url;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use open20\amos\videoconference\models\Videoconf;
+use open20\amos\videoconference\AmosVideoconference;
 
 /**
  * @var yii\web\View $this
@@ -62,7 +54,21 @@ $this->registerJs($js);
     ?>
 
     <!--   DETTAGLIO  -->
-    <?php $this->beginBlock('dettaglio'); ?>
+    <div class="row m-b-15">
+        <div class="col-xs-12">
+            <?php
+            if (!$model->isNewRecord) {
+                echo Html::a(\open20\amos\core\icons\AmosIcons::show('accounts') .AmosVideoconference::t('amosvideoconference','Gestione partecipanti'),
+                    ['/videoconference/videoconf/participants','id' => $model->id, 'redirectUrl' => '/videoconference/videoconf/update?id='.$model->id],
+                    [
+                        'class' => 'btn btn-primary pull-right',
+                        'title' => AmosVideoconference::t('amosvideoconference','Gestione partecipanti'),
+                        'data-confirm' =>  AmosVideoconference::t('amosvideoconference','Stai per lasciare la pagina, verifica prima di aver salvato i tuoi dati. Vuoi procedere?')
+                    ]);
+            }
+            ?>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12 col-sm-12">
             <?php if(empty($model->title)) $model->title = \open20\amos\videoconference\AmosVideoconference::t('amosvideoconference', 'Videocall #') . date('YmdHis'); ?>
@@ -110,75 +116,16 @@ $this->registerJs($js);
 
     <div class="row">
         <div class="col-lg-12 col-sm-12">
-            <?= $form->field($model, 'description')->widget(yii\redactor\widgets\Redactor::className(), [
+            <?= $form->field($model, 'description')->widget(\open20\amos\core\forms\TextEditorWidget::className(), [
+                'options' => ['placeholder' => AmosVideoconference::t('amosvideoconference', 'Inserisci...')],
                 'clientOptions' => [
-                    'lang' => 'it',
-                    'plugins' => ['clips', 'fontcolor', 'imagemanager'],
-                ],
+                    'lang' => substr(Yii::$app->language, 0, 2)
+                ]
             ]);
             ?>
         </div>
     </div>
-    <?php $this->endBlock('dettaglio'); ?>
 
-
-    <!--   PARTECIPANTI  -->
-    <?php $this->beginBlock('partecipanti'); ?>
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <?php
-            /**
-             * @see https://github.com/softark/yii2-dual-listbox or https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox
-             */
-            echo \softark\duallistbox\DualListbox::widget([
-                'model' => $model_partecipanti,
-                'name' => 'ids',
-                'attribute' => 'ids',
-                'items' => $partecipanti,
-                'options' => [
-                    'multiple' => true,
-                    'size' => 25,
-                ],
-                'clientOptions' => [
-                    'nonSelectedListLabel' => \Yii::t('app', 'utenti'),
-                    'selectedListLabel' => \Yii::t('app', 'utenti partecipanti'),
-                    'moveOnSelect' => true,
-                    'moveAllLabel' => \Yii::t('app', 'aggiungi tutti'),
-                    'removeAllLabel' => \Yii::t('app', 'rimuovi tutti'),
-                    'filterTextClear' => \Yii::t('app', 'mostra tutti'),
-                    'filterPlaceHolder' => \Yii::t('app', 'filtro'),
-                    'infoTextFiltered' => '<span class="label label-warning">' . \Yii::t('app', 'filtro') . '</span> {0} ' . \Yii::t('app', 'di') . ' {1}',
-                    'infoText' => \Yii::t('app', 'elementi totali') . ' {0}',
-                    'infoTextEmpty' => \Yii::t('app', 'nessun elemento'),
-                ],
-            ]);
-            ?>
-
-        </div>
-    </div>
-    <?php $this->endBlock('partecipanti'); ?>
-
-    <?php
-    $itemsTab[] = [
-        'label' => Yii::t('cruds', 'dettaglio'),
-        'content' => $this->blocks['dettaglio'],
-        'options' => ['id' => 'dettagli'],
-    ];
-    $itemsTab[] = [
-        'label' => Yii::t('cruds', 'partecipanti'),
-        'content' => $this->blocks['partecipanti'],
-        'options' => ['id' => 'partecipanti'],
-    ];
-    ?>
-
-    <?=
-    Tabs::widget(
-        [
-            'encodeLabels' => false,
-            'items' => $itemsTab
-        ]
-    );
-    ?>
     <?= CloseSaveButtonWidget::widget(['model' => $model]); ?>
     <?php ActiveForm::end(); ?>
 </div>

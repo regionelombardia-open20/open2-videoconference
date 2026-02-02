@@ -17,5 +17,4 @@ return [
     '#article_singular' => 'la',
     '#article_plural' => 'le',
     '#article_indefinite' => 'una',
-    
 ];

@@ -1,21 +1,15 @@
 <?php
 
-/**
- * Aria S.p.A.
- * OPEN 2.0
- *
- *
- * @package    Open20Package
- * @category   CategoryName
- */
-
 namespace open20\amos\videoconference\controllers;
 
+use open20\amos\admin\AmosAdmin;
 use open20\amos\admin\models\UserProfile;
 use open20\amos\core\user\User;
 use open20\amos\core\utilities\Email;
+use open20\amos\news\AmosNews;
 use open20\amos\notificationmanager\models\NotificationsRead;
 use open20\amos\videoconference\models\base\UserProfileForm;
+use open20\amos\videoconference\models\search\UserMeetingSearch;
 use open20\amos\videoconference\models\VideoconfUsersMm;
 use open20\amos\videoconference\utils\EmailUtil;
 use Yii;
@@ -56,6 +50,7 @@ class VideoconfController extends CrudController
                             'actions' => [
                                 'meet',
                                 'json-videoconf-data',
+                                'participants'
                             ],
                             'roles' => ['VIDEOCONF_READ']
                         ],
@@ -69,6 +64,92 @@ class VideoconfController extends CrudController
                 ]
         ]);
         return $behaviors;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        if (\Yii::$app->user->isGuest) {
+            $titleSection = AmosVideoconference::t('amosvideoconference', 'Videoconferenza');
+            $urlLinkAll   = '';
+
+            $labelSigninOrSignup = AmosVideoconference::t('amosvideoconference', '#beforeActionCtaLoginRegister');
+            $titleSigninOrSignup = AmosVideoconference::t(
+                'amosvideoconference',
+                '#beforeActionCtaLoginRegisterTitle',
+                ['platformName' => \Yii::$app->name]
+            );
+            $labelSignin = AmosVideoconference::t('amosvideoconference', '#beforeActionCtaLogin');
+            $titleSignin = AmosVideoconference::t(
+                'amosvideoconference',
+                '#beforeActionCtaLoginTitle',
+                ['platformName' => \Yii::$app->name]
+            );
+
+            $labelLink = $labelSigninOrSignup;
+            $titleLink = $titleSigninOrSignup;
+            $socialAuthModule = Yii::$app->getModule('socialauth');
+            if ($socialAuthModule && ($socialAuthModule->enableRegister == false)) {
+                $labelLink = $labelSignin;
+                $titleLink = $titleSignin;
+            }
+
+            $ctaLoginRegister = Html::a(
+                $labelLink,
+                isset(\Yii::$app->params['linkConfigurations']['loginLinkCommon']) ? \Yii::$app->params['linkConfigurations']['loginLinkCommon']
+                    : \Yii::$app->params['platform']['backendUrl'] . '/' . AmosAdmin::getModuleName() . '/security/login',
+                [
+                    'title' => $titleLink
+                ]
+            );
+            $subTitleSection  = Html::tag(
+                'p',
+                AmosNews::t(
+                    'amosnews',
+                    '#beforeActionSubtitleSectionGuest',
+                    ['platformName' => \Yii::$app->name, 'ctaLoginRegister' => $ctaLoginRegister]
+                )
+            );
+        } else {
+            $titleSection = AmosVideoconference::t('amosvideoconference', 'Videoconferenze');
+            $labelLinkAll = AmosVideoconference::t('amosvideoconference', 'Tutte le videoconferenze');
+            $urlLinkAll   = '/news/news/all-news';
+            $titleLinkAll = AmosVideoconference::t('amosvideoconference', 'Visualizza la lista delle videoconferenze');
+
+            $subTitleSection = Html::tag('p', AmosVideoconference::t('amosnews', '#beforeActionSubtitleSectionLogged'));
+        }
+
+        $labelCreate = AmosVideoconference::t('amosvideoconference', 'Nuova');
+        $titleCreate = AmosVideoconference::t('amosvideoconference', 'Crea una nuova videoconferenza');
+        $labelManage = AmosVideoconference::t('amosvideoconference', 'Gestisci');
+        $titleManage = AmosVideoconference::t('amosvideoconference', 'Gestisci le videoconferenze');
+        $urlCreate   = '/videoconference/videoconf/create';
+        $urlManage   = null;
+
+        $this->view->params = [
+            'isGuest' => \Yii::$app->user->isGuest,
+            'modelLabel' => 'news',
+            'titleSection' => $titleSection,
+            'subTitleSection' => $subTitleSection,
+            'urlLinkAll' => $urlLinkAll,
+            'labelLinkAll' => $labelLinkAll,
+            'titleLinkAll' => $titleLinkAll,
+            'labelCreate' => $labelCreate,
+            'titleCreate' => $titleCreate,
+            'labelManage' => $labelManage,
+            'titleManage' => $titleManage,
+            'urlCreate' => $urlCreate,
+            'urlManage' => $urlManage,
+        ];
+
+        // Lasciare qui questo if e return perché se no va in loop...
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -170,7 +251,7 @@ class VideoconfController extends CrudController
 
         //label pulsante "nuovo"
         Yii::$app->view->params['createNewBtnParams'] = [
-            'createNewBtnLabel' => AmosVideoconference::t('amosvideoconference', 'Nuova Videoconferenza'),
+            'createNewBtnLabel' => AmosVideoconference::t('amosvideoconference', 'Nuova'),
         ];
 
         $filter = ArrayHelper::merge(Yii::$app->request->getQueryParams(), [
@@ -242,7 +323,6 @@ class VideoconfController extends CrudController
      */
     public function actionCreate()
     {
-        $this->layout = "@vendor/open20/amos-core/views/layouts/form";
         $model        = new Videoconf;
 
         //carico i partecipanti ottenendo le variabili $this->model_partecipanti e $this->partecipanti popolate
@@ -258,36 +338,9 @@ class VideoconfController extends CrudController
             }
 
             if ($model->save()) {
-
-                $this->model_partecipanti->videoconf_id = $model->id;
-
-                //aggiorno i partecipanti della conferenza con quelli in post
-                $this->setPartecipanti(Yii::$app->request->post()[$this->model_partecipanti->getModelName()]['ids']);
-
-                //salvo i partecipanti e creo una notification (se non già inviata) per inviare successivamente la mail
-                $saved_partecipanti = $this->model_partecipanti->saveUser2Videoconference();
-
-                if ($saved_partecipanti) {
                     $transaction->commit();
+                return $this->redirect(['participants', 'id'=> $model->id, 'redirectUrl' => '/videoconference/videoconf/update?id='.$model->id]);
 
-                    //Notifica i partecipanti ancora da avvisare
-                    $notifiche = $model->getNotification2Notify();
-                    $this->notifyUsers($notifiche);
-
-                    Yii::$app->getSession()->addFlash('success', Yii::t('amoscore', 'Item created'));
-                    return $this->redirect(['index']);
-                } else {
-                    $transaction->rollBack();
-
-                    Yii::$app->getSession()->addFlash('danger',
-                        Yii::t('amoscore', 'Item not created, check partecipants'));
-                    return $this->render('create',
-                            [
-                            'model' => $model,
-                            'model_partecipanti' => $this->model_partecipanti,
-                            'partecipanti' => $this->partecipanti,
-                    ]);
-                }
             } else {
                 $transaction->rollBack();
                 Yii::$app->getSession()->addFlash('danger', Yii::t('amoscore', 'Item not created, check data'));
@@ -309,6 +362,64 @@ class VideoconfController extends CrudController
     }
 
     /**
+     * @param $id
+     * @param $redirectUrl
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionParticipants($id, $redirectUrl = null){
+        Url::remember();
+        $this->model = $this->findModel($id);
+        $this->loadPartecipanti($id = null);
+
+
+        $modelSearch = new UserMeetingSearch();
+        $dataProvider = $modelSearch->search(\Yii::$app->request->get());
+        $dataProviderInvitationUsers = new ActiveDataProvider([
+            'query' => $this->model->getUserProfileParticipants()
+        ]);
+
+        $arrayUsers = $this->model->getUserProfileParticipants()->asArray()->select('id')->all();
+        $participants_user_profile_ids = [];
+        foreach ($arrayUsers as $user_profile_id) {
+            $participants_user_profile_ids  [] = $user_profile_id['id'];
+        }
+
+        $countInvitationUsers = $this->model->getUserProfileParticipants()->count();
+        if (\Yii::$app->request->isPost && \Yii::$app->request->post('submit_participants')) {
+            $this->model_partecipanti->videoconf_id = $this->model->id;
+            //aggiorno i partecipanti della conferenza con quelli in post
+            $users_ids_str = \Yii::$app->request->post('selected_users_ids');
+            $user_ids = explode(',' , $users_ids_str);
+            $this->setPartecipanti($user_ids);
+
+            //salvo i partecipanti e creo una notification (se non già inviata) per inviare successivamente la mail
+            $saved_partecipanti = $this->model_partecipanti->saveUser2Videoconference();
+
+            if ($saved_partecipanti) {
+                //Notifica i partecipanti ancora da avvisare
+                $notifiche = $this->model->getNotification2Notify();
+                $this->notifyUsers($notifiche);
+
+                return $this->redirect(['index']);
+            }
+        }
+
+
+            return $this->render('participants', [
+            'model' => $this->model,
+            'modelSearch' => $modelSearch,
+            'dataProvider' => $dataProvider,
+            'dataProviderInvitationUsers' => $dataProviderInvitationUsers,
+            'countInvitationUsers' => $countInvitationUsers,
+            'participants_user_profile_ids' => $participants_user_profile_ids,
+            'readOnly' => false,
+            'redirectUrl' => $redirectUrl
+        ]);
+    }
+
+    /**
      * Updates an existing Videoconf model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -316,11 +427,7 @@ class VideoconfController extends CrudController
      */
     public function actionUpdate($id)
     {
-        $this->layout = "@vendor/open20/amos-core/views/layouts/form";
         $model        = $this->findModel($id);
-
-        //carico i partecipanti ottenendo le variabili $this->model_partecipanti e $this->partecipanti popolate
-        $this->loadPartecipanti($id);
 
         /* pr(Yii::$app->request->post(), "post"); */
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -328,14 +435,6 @@ class VideoconfController extends CrudController
             $this->setPartecipanti(Yii::$app->request->post()[$this->model_partecipanti->getModelName()]['ids']);
 
             if ($model->save()) {
-                //salvo i partecipanti e creo una notification (se non già inviata) per inviare successivamente la mail
-                $saved_partecipanti = $this->model_partecipanti->saveUser2Videoconference();
-
-                //Notifica i partecipanti ancora da avvisare
-                $notifiche = $model->getNotification2Notify();
-                $this->notifyUsers($notifiche);
-
-                Yii::$app->getSession()->addFlash('success', Yii::t('amoscore', 'Item updated'));
                 return $this->redirect(['index']);
             } else {
                 Yii::$app->getSession()->addFlash('danger', Yii::t('amoscore', 'Item not updated, check data'));

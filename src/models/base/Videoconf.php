@@ -1,16 +1,8 @@
 <?php
 
-/**
- * Aria S.p.A.
- * OPEN 2.0
- *
- *
- * @package    Open20Package
- * @category   CategoryName
- */
-
 namespace open20\amos\videoconference\models\base;
 
+use open20\amos\admin\models\UserProfile;
 use open20\amos\notificationmanager\models\Notification;
 use Yii;
 use open20\amos\videoconference\AmosVideoconference;
@@ -128,6 +120,14 @@ class Videoconf extends \open20\amos\core\record\Record
     public function getVideoconfUsersMms()
     {
         return $this->hasMany(\open20\amos\videoconference\models\VideoconfUsersMm::className(), ['videoconf_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserProfileParticipants()
+    {
+        return $this->hasMany(UserProfile::className(), ['user_id' => 'user_profile_id'])->via('videoconfUsersMms');
     }
 
 

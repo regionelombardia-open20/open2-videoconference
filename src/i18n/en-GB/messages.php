@@ -17,4 +17,14 @@ return [
     '#article_singular' => '',
     '#article_plural' => '',
     '#article_indefinite' => 'a',
+    'Nuova' => 'New',
+    'Videoconferenze' => 'Videoconferences',
+    'Videoconferenza' => 'Videoconference',
+    'Tutte le videoconferenze' => 'All videoconferences',
+    'Visualizza la lista delle videoconferenze' => 'Show the list of videoconferences',
+    'Crea una nuova videoconferenza' => 'Create a new videconference',
+    'Gestisci' => 'Manage',
+    'Gestisci le videoconferenze'=> 'Manage videoconferences',
+    'Gestione partecipanti'=> 'Manage participants',
+    "Stai per lasciare la pagina, verifica prima di aver salvato i tuoi dati. Vuoi procedere?" => "You are leaving the page, check to have saved all changes. Do you want to continue?"
 ];

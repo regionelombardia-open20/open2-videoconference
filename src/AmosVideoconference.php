@@ -11,6 +11,7 @@
 
 namespace open20\amos\videoconference;
 
+use open20\amos\core\interfaces\BreadcrumbInterface;
 use open20\amos\core\module\AmosModule;
 use open20\amos\core\module\ModuleInterface;
 
@@ -20,7 +21,7 @@ use Yii;
  * Class AmosVideoconference
  * @package open20\amos\videoconference
  */
-class AmosVideoconference extends AmosModule implements ModuleInterface
+class AmosVideoconference extends AmosModule implements ModuleInterface, BreadcrumbInterface
 {
     public static $CONFIG_FOLDER = 'config';
     
@@ -47,7 +48,7 @@ class AmosVideoconference extends AmosModule implements ModuleInterface
     public $onlyNetworkUsers = true;
 
     //Url without http:// of the jitsi installation
-    public $jitsiDomain = 'PUT_JITSI_DOMAIN_HERE';
+    public $jitsiDomain = 'meet.test.demotestwip.it';
 
 
     /**
@@ -96,6 +97,48 @@ class AmosVideoconference extends AmosModule implements ModuleInterface
     {
         return [            
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getIndexActions()
+    {
+        return [
+            'videoconf/index',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function defaultControllerIndexRoute()
+    {
+        return [
+            'videoconf' => '/videoconference/videoconf/index'
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function defaultControllerIndexRouteSlogged()
+    {
+        return [
+            'videoconf' => '/videoconference/videoconf/index',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getControllerNames()
+    {
+        $names = [
+            'videoconf' => self::t('amosnews', "Videconferenza"),
+        ];
+
+        return $names;
     }
         
 }
